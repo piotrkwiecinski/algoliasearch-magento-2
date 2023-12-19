@@ -3,7 +3,8 @@ define(
         'jquery',
         'algoliaAnalytics',
         'algoliaBundle',
-        'algoliaCommon'
+        'algoliaCommon',
+        'mage/cookies'
     ],
     function ($, algoliaAnalyticsWrapper, algoliaBundle) {
         algoliaAnalytics = algoliaAnalyticsWrapper.default;
@@ -18,7 +19,8 @@ define(
             track: function (algoliaConfig, partial = false) {
                 this.config = algoliaConfig;
                 this.defaultIndexName = algoliaConfig.indexName + '_products';
-                this.useCookie = this.config.cookieConfiguration.cookieRestrictionModeEnabled ? !!getCookie(this.config.cookieConfiguration.consentCookieName) : true;
+                this.useCookie = this.config.cookieConfiguration.cookieRestrictionModeEnabled
+                    ? !!$.mage.cookies.get(this.config.cookieConfiguration.consentCookieName) : true;
                 if (this.isTracking || this.useCookie === false) {
                     return;
                 }
@@ -36,7 +38,8 @@ define(
             },
 
             initializeAnalytics: function (partial = false) {
-                let useCookie = this.config.cookieConfiguration.cookieRestrictionModeEnabled ? !!getCookie(this.config.cookieConfiguration.consentCookieName) : true;
+                let useCookie = this.config.cookieConfiguration.cookieRestrictionModeEnabled
+                    ? !!$.mage.cookies.get(this.config.cookieConfiguration.consentCookieName) : true;
                 if (partial) {
                     algoliaAnalytics.init({
                         appId:  this.config.applicationId,
@@ -57,7 +60,7 @@ define(
                 var userAgent = 'insights-js-in-magento (' + this.config.extensionVersion + ')';
                 algoliaAnalytics.addAlgoliaAgent(userAgent);
 
-                var userToken = getCookie('aa-search');
+                var userToken = $.mage.cookies.get('aa-search');
                 if (userToken && userToken !== '') algoliaAnalytics.setUserToken(userToken);
 
             },

@@ -1,7 +1,7 @@
-define([], function () {
+define(['jquery', 'mage/cookies'], function () {
     return {
         getItemHtml: function (item, html, addTocart) {
-            let correctFKey = getCookie('form_key');
+            let correctFKey = $.mage.cookies.get('form_key');
             let action = algoliaConfig.recommend.addToCartParams.action + 'product/' + item.objectID + '/';
             if(correctFKey != "" && algoliaConfig.recommend.addToCartParams.formKey != correctFKey) {
                 algoliaConfig.recommend.addToCartParams.formKey = correctFKey;

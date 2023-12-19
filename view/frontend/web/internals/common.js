@@ -1,4 +1,4 @@
-define(['jquery', 'algoliaBundle'], function ($, algoliaBundle) {
+define(['jquery', 'algoliaBundle', 'mage/cookies'], function ($, algoliaBundle) {
 
     window.algolia = {
         deprecatedHooks: [
@@ -91,16 +91,6 @@ define(['jquery', 'algoliaBundle'], function ($, algoliaBundle) {
         })(navigator.userAgent || navigator.vendor || window.opera);
 
         return check;
-    };
-
-    window.getCookie = function (name) {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + name + "=");
-        if (parts.length == 2) {
-            return parts.pop().split(";").shift();
-        }
-
-        return "";
     };
 
     window.transformHit = function (hit, price_key, helper) {
@@ -207,7 +197,7 @@ define(['jquery', 'algoliaBundle'], function ($, algoliaBundle) {
         // Add to cart parameters
         var action = algoliaConfig.instant.addToCartParams.action + 'product/' + hit.objectID + '/';
 
-        var correctFKey = getCookie('form_key');
+        var correctFKey = $.mage.cookies.get('form_key');
 
         if (correctFKey != "" && algoliaConfig.instant.addToCartParams.formKey != correctFKey) {
             algoliaConfig.instant.addToCartParams.formKey = correctFKey;

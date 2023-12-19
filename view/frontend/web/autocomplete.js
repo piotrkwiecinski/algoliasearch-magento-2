@@ -10,7 +10,8 @@ define(
         'algoliaCommon',
         'algoliaInsights',
         'algoliaHooks',
-        'domReady!'
+        'domReady!',
+        'mage/cookies'
     ],
     function ($, algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
 
@@ -128,7 +129,7 @@ define(
             // Add to cart parameters
             const action = algoliaConfig.instant.addToCartParams.action + 'product/' + hit.objectID + '/';
 
-            const correctFKey = getCookie('form_key');
+            const correctFKey = $.mage.cookies.get('form_key');
 
             if (correctFKey != "" && algoliaConfig.instant.addToCartParams.formKey != correctFKey) {
                 algoliaConfig.instant.addToCartParams.formKey = correctFKey;
@@ -543,7 +544,8 @@ define(
                 const queryId = $this.attr('data-queryId');
                 const position = $this.attr('data-position');
 
-                let useCookie = algoliaConfig.cookieConfiguration.cookieRestrictionModeEnabled ? !!getCookie(algoliaConfig.cookieConfiguration.consentCookieName) : true;
+                let useCookie = algoliaConfig.cookieConfiguration.cookieRestrictionModeEnabled ?
+                    !!$.mage.cookies.get(algoliaConfig.cookieConfiguration.consentCookieName) : true;
                 if (useCookie !== false) {
                     algoliaInsights.initializeAnalytics();
                     const eventData = algoliaInsights.buildEventData(
